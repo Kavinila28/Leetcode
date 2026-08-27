@@ -1,15 +1,27 @@
 class Solution {
 public:
-    void inorder(TreeNode* root, vector<int>& res) {
-        if (!root) return;
-        inorder(root->left, res);
-        res.push_back(root->val);
-        inorder(root->right, res);
-    }
-    
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int> res;
-        inorder(root, res);
+        stack<TreeNode*> st;
+        TreeNode* curr = root;
+        
+        while (curr != nullptr || !st.empty()) {
+            // Reach the left most Node of the current Node
+            while (curr != nullptr) {
+                st.push(curr);
+                curr = curr->left;
+            }
+            
+            // Current must be NULL at this point
+            curr = st.top();
+            st.pop();
+            
+            res.push_back(curr->val);
+            
+            // We have visited the node and its left subtree. Now, it's right subtree's turn
+            curr = curr->right;
+        }
+        
         return res;
     }
 };
